@@ -56,6 +56,7 @@ function next() {
 
 <template>
   <div class="grid gap-3">
+    <img src="/images/topics/passport.jpg" alt="Travel documents" class="photo-scene mb-0 h-36 sm:h-44" />
     <p class="kicker">{{ index + 1 }} / {{ names.length }}</p>
     <h3 class="m-0 flex items-center gap-2 text-[1.8rem]">
       {{ current.name }} <SpeakButton :text="current.name" />

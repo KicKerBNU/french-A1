@@ -2,11 +2,13 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SpeakButton from '@/components/SpeakButton.vue'
+import { imageForTextOrUnit } from '@/content/visuals'
 import { useProgressStore } from '@/stores/progress'
 import type { Locale, QuizQuestion } from '@/types/course'
 
 const props = defineProps<{
   questions: QuizQuestion[]
+  unitId?: number
 }>()
 
 const emit = defineEmits<{
@@ -22,6 +24,14 @@ const score = ref(0)
 const done = ref(false)
 
 const question = computed(() => props.questions[index.value])
+const visual = computed(() =>
+  imageForTextOrUnit(
+    props.unitId ?? 0,
+    question.value.prompt.fr,
+    question.value.prompt.en,
+    ...question.value.options.map((option) => option.fr),
+  ),
+)
 
 function label(item: { fr: string; en: string }) {
   return progress.labelFor(lang.value, item)
@@ -66,6 +76,7 @@ function optionClass(optionIndex: number) {
     </div>
     <template v-else>
       <p class="kicker">{{ index + 1 }} / {{ questions.length }}</p>
+      <img :src="visual.src" :alt="visual.alt" class="photo-scene mb-0 h-40 sm:h-48" />
       <h3 class="m-0 text-2xl">{{ label(question.prompt) }}</h3>
       <div class="grid gap-2.5">
         <div

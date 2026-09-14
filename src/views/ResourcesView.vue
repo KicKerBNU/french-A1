@@ -2,7 +2,9 @@
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import CoverCard from '@/components/CoverCard.vue'
 import { resourceBanks } from '@/content/course'
+import { coverForUnit } from '@/content/visuals'
 import { useProgressStore } from '@/stores/progress'
 import type { Locale } from '@/types/course'
 
@@ -19,25 +21,19 @@ const banks = computed(() => resourceBanks.filter((bank) => bank.available))
     <h1 class="title-xl">{{ t('resources.title') }}</h1>
     <p class="lead">{{ t('resources.lead') }}</p>
 
-    <section class="mt-7 grid gap-3">
-      <RouterLink
+    <section class="mt-7 grid gap-4 sm:grid-cols-3">
+      <CoverCard
         v-for="bank in banks"
         :key="bank.id"
-        class="card grid items-center gap-4 p-5 sm:grid-cols-[auto_1fr_auto]"
+        :src="coverForUnit(bank.id).src"
+        :alt="coverForUnit(bank.id).alt"
         :to="`/units/${bank.slug}`"
-      >
-        <span
-          class="grid size-12 place-items-center rounded-xl font-serif text-lg font-extrabold text-cream"
-          :style="{ background: bank.accent }"
-        >
-          {{ lang === 'fr-FR' ? bank.title.slice(0, 1) : bank.titleEn.slice(0, 1) }}
-        </span>
-        <div>
-          <h2 class="mb-1 text-[1.45rem]">{{ lang === 'fr-FR' ? bank.title : bank.titleEn }}</h2>
-          <p class="muted m-0">{{ progress.labelFor(lang, bank.blurb) }}</p>
-        </div>
-        <span class="chip w-fit">{{ progress.unitProgress(bank.id) }}%</span>
-      </RouterLink>
+        :kicker="`${progress.unitProgress(bank.id)}%`"
+        :title="lang === 'fr-FR' ? bank.title : bank.titleEn"
+        :subtitle="progress.labelFor(lang, bank.blurb)"
+        :accent="bank.accent"
+        tall
+      />
     </section>
 
     <p class="muted mt-6">{{ t('resources.note') }}</p>

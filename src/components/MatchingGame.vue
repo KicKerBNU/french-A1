@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { imageForText } from '@/content/visuals'
 import type { MatchPair } from '@/types/course'
 
 const props = defineProps<{
@@ -21,6 +22,10 @@ const right = ref(
 const selected = ref<string | null>(null)
 const matched = ref<string[]>([])
 const wrong = ref<string | null>(null)
+
+function visualFor(text: string) {
+  return imageForText(text)
+}
 
 function chooseLeft(id: string) {
   selected.value = id
@@ -67,11 +72,12 @@ function rightClass(id: string) {
         v-for="item in left"
         :key="item.id"
         type="button"
-        class="min-h-[3.25rem] px-3 py-2.5"
+        class="flex min-h-[3.25rem] items-center gap-3 px-3 py-2.5"
         :class="leftClass(item.id)"
         :disabled="matched.includes(item.id)"
         @click="chooseLeft(item.id)"
       >
+        <img v-if="visualFor(item.text)" :src="visualFor(item.text)!.src" :alt="visualFor(item.text)!.alt" class="size-10 rounded-lg object-cover" />
         {{ item.text }}
       </button>
     </div>
@@ -80,11 +86,12 @@ function rightClass(id: string) {
         v-for="item in right"
         :key="item.id"
         type="button"
-        class="min-h-[3.25rem] px-3 py-2.5"
+        class="flex min-h-[3.25rem] items-center gap-3 px-3 py-2.5"
         :class="rightClass(item.id)"
         :disabled="matched.includes(item.id)"
         @click="chooseRight(item.id)"
       >
+        <img v-if="visualFor(item.text)" :src="visualFor(item.text)!.src" :alt="visualFor(item.text)!.alt" class="size-10 rounded-lg object-cover" />
         {{ item.text }}
       </button>
     </div>

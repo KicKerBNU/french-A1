@@ -64,6 +64,7 @@ watch(
 
 <template>
   <div class="grid gap-4">
+    <img src="/images/topics/notebook.jpg" alt="A notebook" class="photo-scene mb-0 h-36 sm:h-44" />
     <div class="flex flex-wrap gap-2">
       <button class="btn btn-secondary" type="button" @click="mode = 'board'">{{ t('activity.hearLetter') }}</button>
       <button class="btn btn-primary" type="button" @click="startQuiz">{{ t('activity.quizLetter') }}</button>

@@ -18,6 +18,7 @@ const lang = computed(() => locale.value as Locale)
 <template>
   <div class="grid gap-3.5">
     <p class="muted">{{ t('activity.tapPin') }}</p>
+    <img src="/images/covers/communication.jpg" alt="Friends talking" class="photo-scene mb-0 h-36 sm:h-44" />
     <div class="card relative min-h-60 overflow-hidden">
       <svg class="block h-auto w-full" viewBox="0 0 400 220" role="img" aria-label="World">
         <rect width="400" height="220" fill="#d7efe6" rx="18" />

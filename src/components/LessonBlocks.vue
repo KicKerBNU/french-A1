@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SpeakButton from '@/components/SpeakButton.vue'
+import { imageForText } from '@/content/visuals'
 import type { ContentBlock, Locale } from '@/types/course'
 
 const props = defineProps<{
@@ -14,6 +15,10 @@ const lang = computed(() => locale.value as Locale)
 function text(labeled?: { fr: string; en: string }) {
   if (!labeled) return ''
   return lang.value === 'fr-FR' ? labeled.fr : labeled.en
+}
+
+function itemVisual(item: { fr: string; en: string }) {
+  return imageForText(item.fr, item.en)
 }
 </script>
 
@@ -30,13 +35,21 @@ function text(labeled?: { fr: string; en: string }) {
         <li
           v-for="item in block.items"
           :key="item.fr"
-          class="grid gap-3 rounded-2xl bg-cream/80 p-3 shadow-[inset_0_0_0_1px_var(--color-line)] sm:grid-cols-[1.2fr_1fr]"
+          class="flex items-center gap-3 rounded-2xl bg-cream/80 p-3 shadow-[inset_0_0_0_1px_var(--color-line)]"
         >
-          <span class="flex items-center justify-between gap-2 font-bold">
-            {{ item.fr }}
-            <SpeakButton :text="item.fr" />
+          <img
+            v-if="itemVisual(item)"
+            :src="itemVisual(item)!.src"
+            :alt="itemVisual(item)!.alt"
+            class="photo-thumb"
+          />
+          <span class="grid min-w-0 flex-1 gap-1 sm:grid-cols-[1.2fr_1fr] sm:items-center">
+            <span class="flex items-center justify-between gap-2 font-bold">
+              {{ item.fr }}
+              <SpeakButton :text="item.fr" />
+            </span>
+            <span class="text-[0.92rem] text-ink-soft">{{ item.en }}</span>
           </span>
-          <span class="text-[0.92rem] text-ink-soft">{{ item.en }}</span>
         </li>
       </ul>
     </template>
