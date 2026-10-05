@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SpeakButton from '@/components/SpeakButton.vue'
+import WordHint from '@/components/WordHint.vue'
 import { imageForTextOrUnit } from '@/content/visuals'
 import type { VocabItem } from '@/types/course'
 
@@ -50,14 +51,14 @@ function shuffle() {
       <div class="grid justify-items-center gap-3 px-5 py-6 text-center">
         <span class="font-semibold text-ink-soft">{{ index + 1 }} / {{ items.length }}</span>
         <template v-if="!flipped">
-          <strong class="font-serif text-[clamp(2rem,5vw,3.2rem)]">{{ card.fr }}</strong>
+          <strong class="font-serif text-[clamp(2rem,5vw,3.2rem)]"><WordHint :text="card.fr" source="fr" /></strong>
           <SpeakButton :text="card.fr" />
           <small class="font-semibold text-ink-soft">{{ t('activity.flip') }}</small>
         </template>
         <template v-else>
-          <strong class="font-serif text-[clamp(2rem,5vw,3.2rem)]">{{ card.en }}</strong>
-          <p v-if="card.exampleFr" class="m-0">{{ card.exampleFr }}</p>
-          <small v-if="card.exampleEn" class="font-semibold text-ink-soft">{{ card.exampleEn }}</small>
+          <strong class="font-serif text-[clamp(2rem,5vw,3.2rem)]"><WordHint :text="card.en" source="en" /></strong>
+          <p v-if="card.exampleFr" class="m-0"><WordHint :text="card.exampleFr" source="fr" /></p>
+          <small v-if="card.exampleEn" class="font-semibold text-ink-soft"><WordHint :text="card.exampleEn" source="en" /></small>
         </template>
       </div>
     </div>

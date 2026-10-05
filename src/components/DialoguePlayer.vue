@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AvatarChip from '@/components/AvatarChip.vue'
 import SpeakButton from '@/components/SpeakButton.vue'
+import WordHint from '@/components/WordHint.vue'
 import { avatarFor } from '@/content/visuals'
 import { useProgressStore } from '@/stores/progress'
 import type { Dialogue, Locale } from '@/types/course'
@@ -39,14 +40,19 @@ const ordered = computed(
 
 <template>
   <div class="grid gap-4">
-    <p class="muted">{{ progress.labelFor(lang, dialogue.context) }}</p>
+    <p class="muted"><WordHint :text="progress.labelFor(lang, dialogue.context)" /></p>
     <ol class="m-0 grid list-none gap-2.5 p-0">
       <li v-for="line in dialogue.lines.slice(0, step + 1)" :key="line.fr" class="surface flex items-start gap-3 p-3.5">
         <AvatarChip :src="avatarFor(line.speaker).src" :alt="avatarFor(line.speaker).alt" :name="line.speaker" />
         <div class="min-w-0 flex-1">
           <span class="text-xs font-extrabold text-gold-deep">{{ line.speaker }}</span>
-          <strong class="mt-0.5 flex items-center gap-2">{{ line.fr }} <SpeakButton :text="line.fr" /></strong>
-          <small v-if="progress.state.showEnglish" class="mt-1 block text-ink-soft">{{ line.en }}</small>
+          <strong class="mt-0.5 flex items-center gap-2">
+            <WordHint :text="line.fr" source="fr" />
+            <SpeakButton :text="line.fr" :speaker="line.speaker" />
+          </strong>
+          <small v-if="progress.state.showEnglish" class="mt-1 block text-ink-soft">
+            <WordHint :text="line.en" source="en" />
+          </small>
         </div>
       </li>
     </ol>
@@ -69,7 +75,7 @@ const ordered = computed(
             :alt="avatarFor(dialogue.lines[lineIndex].speaker).alt"
             size="sm"
           />
-          {{ dialogue.lines[lineIndex].fr }}
+          <WordHint :text="dialogue.lines[lineIndex].fr" source="fr" />
         </button>
       </div>
       <div class="grid gap-2">
@@ -85,7 +91,7 @@ const ordered = computed(
             :alt="avatarFor(dialogue.lines[lineIndex].speaker).alt"
             size="sm"
           />
-          {{ dialogue.lines[lineIndex].fr }}
+          <WordHint :text="dialogue.lines[lineIndex].fr" source="fr" />
         </button>
       </div>
       <p v-if="ordered" class="m-0 font-bold text-pine-deep">{{ t('activity.correct') }}</p>

@@ -54,6 +54,8 @@ const enUS = {
   activity: {
     complete: 'Mark as done',
     completed: 'Completed',
+    next: 'Next exercise',
+    unitDone: 'Back to the unit',
     check: 'Check',
     again: 'Try again',
     show: 'Show English',
@@ -61,6 +63,7 @@ const enUS = {
     speak: 'Listen',
     correct: 'That’s right.',
     incorrect: 'Not this one.',
+    answerWas: 'It was {letter}.',
     score: '{score} / {total}',
     flip: 'Tap to flip',
     nextCard: 'Next card',

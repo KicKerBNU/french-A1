@@ -31,6 +31,10 @@ export function getLessonsForUnit(unitId: number): Lesson[] {
   return lessonsByUnit[unitId] ?? []
 }
 
+export function getAllLessons(): Lesson[] {
+  return Object.values(lessonsByUnit).flat()
+}
+
 export function getLesson(unitId: number, lessonId: string): Lesson | undefined {
   return getLessonsForUnit(unitId).find((lesson) => lesson.id === lessonId)
 }
@@ -48,4 +52,23 @@ export function getActivity(
 
 export function getAllActivitiesForUnit(unitId: number): Activity[] {
   return getLessonsForUnit(unitId).flatMap((lesson) => lesson.activities)
+}
+
+export function getNextActivity(
+  unitId: number,
+  lessonId: string,
+  activityId: string,
+): { lesson: Lesson; activity: Activity } | undefined {
+  const lessons = getLessonsForUnit(unitId)
+  const lessonIndex = lessons.findIndex((lesson) => lesson.id === lessonId)
+  if (lessonIndex < 0) return undefined
+  const lesson = lessons[lessonIndex]
+  const activityIndex = lesson.activities.findIndex((item) => item.id === activityId)
+  if (activityIndex < 0) return undefined
+  const nextInLesson = lesson.activities[activityIndex + 1]
+  if (nextInLesson) return { lesson, activity: nextInLesson }
+  const nextLesson = lessons[lessonIndex + 1]
+  const nextActivity = nextLesson?.activities[0]
+  if (nextLesson && nextActivity) return { lesson: nextLesson, activity: nextActivity }
+  return undefined
 }

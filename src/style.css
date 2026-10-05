@@ -146,4 +146,16 @@
   .kind-pill {
     @apply grid size-11 shrink-0 place-items-center rounded-2xl bg-pine/10 text-xl;
   }
+
+  .word-tip {
+    @apply cursor-help rounded-[0.2em] underline decoration-dotted decoration-gold/80 underline-offset-[0.22em] hover:bg-gold/15 focus-visible:bg-gold/15 focus-visible:outline-none;
+  }
+
+  .word-tooltip {
+    @apply pointer-events-none fixed z-50 flex max-w-[min(22rem,calc(100vw-1.5rem))] -translate-x-1/2 -translate-y-full items-center gap-2 rounded-2xl bg-ink px-3 py-2 text-sm font-bold text-cream shadow-card;
+  }
+
+  .word-tooltip-lang {
+    @apply rounded-full bg-gold px-2 py-0.5 text-[0.65rem] font-extrabold tracking-wide text-cream;
+  }
 }

@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { RouterLink, RouterView, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { persistLocale } from '@/i18n'
+import WordTooltip from '@/components/WordTooltip.vue'
 import { useProgressStore } from '@/stores/progress'
 import type { Locale } from '@/types/course'
 
@@ -75,5 +76,6 @@ setLocale(locale.value as Locale)
       </div>
     </header>
     <RouterView />
+    <WordTooltip />
   </div>
 </template>

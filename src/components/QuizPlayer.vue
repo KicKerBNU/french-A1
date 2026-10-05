@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SpeakButton from '@/components/SpeakButton.vue'
+import WordHint from '@/components/WordHint.vue'
 import { imageForTextOrUnit } from '@/content/visuals'
 import { useProgressStore } from '@/stores/progress'
 import type { Locale, QuizQuestion } from '@/types/course'
@@ -77,7 +78,7 @@ function optionClass(optionIndex: number) {
     <template v-else>
       <p class="kicker">{{ index + 1 }} / {{ questions.length }}</p>
       <img :src="visual.src" :alt="visual.alt" class="photo-scene mb-0 h-40 sm:h-48" />
-      <h3 class="m-0 text-2xl">{{ label(question.prompt) }}</h3>
+      <h3 class="m-0 text-2xl"><WordHint :text="label(question.prompt)" /></h3>
       <div class="grid gap-2.5">
         <div
           v-for="(option, optionIndex) in question.options"
@@ -89,13 +90,13 @@ function optionClass(optionIndex: number) {
           @click="choose(optionIndex)"
           @keydown.enter.prevent="choose(optionIndex)"
         >
-          <span>{{ label(option) }}</span>
+          <span><WordHint :text="label(option)" /></span>
           <SpeakButton :text="option.fr" />
         </div>
       </div>
       <p v-if="picked !== null" class="m-0">
         {{ picked === question.answer ? t('activity.correct') : t('activity.incorrect') }}
-        {{ label(question.explanation) }}
+        <WordHint :text="label(question.explanation)" />
       </p>
       <button v-if="picked !== null" class="btn btn-primary w-fit" type="button" @click="next">
         {{ index + 1 === questions.length ? t('activity.complete') : t('app.next') }}

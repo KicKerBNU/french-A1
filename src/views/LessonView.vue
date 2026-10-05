@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import LessonBlocks from '@/components/LessonBlocks.vue'
+import WordHint from '@/components/WordHint.vue'
 import { getUnitBySlug } from '@/content/course'
 import { coverForUnit, imageForTextOrUnit, kindEmoji } from '@/content/visuals'
 import { getLesson } from '@/content/units'
@@ -38,7 +39,7 @@ function activityVisual(activity: Activity) {
 <template>
   <main v-if="unit && lesson" class="page">
     <RouterLink class="btn btn-ghost" :to="`/units/${unit.slug}`">
-      ← {{ lang === 'fr-FR' ? unit.title : unit.titleEn }}
+      ← <WordHint :text="lang === 'fr-FR' ? unit.title : unit.titleEn" />
     </RouterLink>
 
     <section class="photo-card relative mb-7 overflow-hidden">
@@ -48,8 +49,12 @@ function activityVisual(activity: Activity) {
         <p class="kicker mb-2 text-gold">
           {{ unit.hub === 'resources' ? t('resources.fromUnit', { n: lesson.number }) : t('lesson.lesson', { n: lesson.number }) }}
         </p>
-        <h1 class="m-0 font-serif text-[clamp(1.7rem,4vw,2.8rem)] text-cream">{{ progress.labelFor(lang, lesson.title) }}</h1>
-        <p class="mt-2 mb-0 max-w-[50ch] text-cream/90">{{ progress.labelFor(lang, lesson.summary) }}</p>
+        <h1 class="m-0 font-serif text-[clamp(1.7rem,4vw,2.8rem)] text-cream">
+          <WordHint :text="progress.labelFor(lang, lesson.title)" />
+        </h1>
+        <p class="mt-2 mb-0 max-w-[50ch] text-cream/90">
+          <WordHint :text="progress.labelFor(lang, lesson.summary)" />
+        </p>
       </div>
     </section>
 
@@ -70,7 +75,7 @@ function activityVisual(activity: Activity) {
         <span class="kind-pill">{{ kindEmoji[activity.type] ?? '▶' }}</span>
         <div class="min-w-0 flex-1">
           <p class="kicker mb-1">{{ t(`activity.kind.${activity.type}`) }}</p>
-          <h3 class="m-0 text-xl">{{ progress.labelFor(lang, activity.title) }}</h3>
+          <h3 class="m-0 text-xl"><WordHint :text="progress.labelFor(lang, activity.title)" /></h3>
         </div>
         <span class="chip">{{ progress.isDone(activity.id) ? t('unit.done') : t('app.start') }}</span>
       </RouterLink>

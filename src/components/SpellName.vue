@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SpeakButton from '@/components/SpeakButton.vue'
+import WordHint from '@/components/WordHint.vue'
 import { speakFrench } from '@/composables/useSpeech'
 import { useProgressStore } from '@/stores/progress'
 import type { Locale, SpellTarget } from '@/types/course'
@@ -59,21 +60,34 @@ function next() {
     <img src="/images/topics/passport.jpg" alt="Travel documents" class="photo-scene mb-0 h-36 sm:h-44" />
     <p class="kicker">{{ index + 1 }} / {{ names.length }}</p>
     <h3 class="m-0 flex items-center gap-2 text-[1.8rem]">
-      {{ current.name }} <SpeakButton :text="current.name" />
+      <WordHint :text="current.name" source="fr" /> <SpeakButton :text="current.name" />
     </h3>
-    <p class="muted">{{ progress.labelFor(lang, current.hint) }}</p>
-    <p class="m-0 min-h-12 rounded-2xl bg-cream px-3 py-3 font-extrabold tracking-[0.18em]">{{ typed || '—' }}</p>
-    <p v-if="ok" class="m-0 font-bold text-pine-deep">{{ t('activity.spellDone') }}</p>
-    <div class="grid grid-cols-9 gap-1.5 md:grid-cols-[repeat(13,minmax(0,1fr))]">
-      <button
-        v-for="letter in keys"
-        :key="letter"
-        type="button"
-        class="surface min-h-11 font-extrabold"
-        @click="press(letter)"
-      >
-        {{ letter }}
-      </button>
+    <p class="muted"><WordHint :text="progress.labelFor(lang, current.hint)" /></p>
+    <p class="m-0 min-h-12 rounded-2xl bg-cream px-3 py-3 text-center font-extrabold tracking-[0.18em]">{{ typed || '—' }}</p>
+    <p v-if="ok" class="m-0 text-center font-bold text-pine-deep">{{ t('activity.spellDone') }}</p>
+    <div class="grid gap-1.5">
+      <div class="flex justify-center gap-1.5">
+        <button
+          v-for="letter in keys.slice(0, 13)"
+          :key="letter"
+          type="button"
+          class="surface grid h-11 min-w-0 flex-1 place-items-center text-center font-extrabold"
+          @click="press(letter)"
+        >
+          {{ letter }}
+        </button>
+      </div>
+      <div class="flex justify-center gap-1.5">
+        <button
+          v-for="letter in keys.slice(13)"
+          :key="letter"
+          type="button"
+          class="surface grid h-11 min-w-0 flex-1 place-items-center text-center font-extrabold"
+          @click="press(letter)"
+        >
+          {{ letter }}
+        </button>
+      </div>
     </div>
     <div class="flex gap-2">
       <button class="btn btn-secondary" type="button" @click="clear">{{ t('activity.spellClear') }}</button>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+import WordHint from '@/components/WordHint.vue'
 
 defineProps<{
   src: string
@@ -26,8 +27,12 @@ defineProps<{
         {{ kicker }}
       </span>
       <div class="absolute inset-x-0 bottom-0 p-4 text-cream">
-        <h3 class="m-0 font-serif text-[1.35rem] leading-tight text-cream">{{ title }}</h3>
-        <p v-if="subtitle" class="mt-1 mb-0 line-clamp-2 text-sm text-cream/85">{{ subtitle }}</p>
+        <h3 class="m-0 font-serif text-[1.35rem] leading-tight text-cream">
+          <WordHint :text="title" />
+        </h3>
+        <p v-if="subtitle" class="mt-1 mb-0 line-clamp-2 text-sm text-cream/85">
+          <WordHint :text="subtitle" />
+        </p>
       </div>
     </div>
     <div v-if="$slots.default" class="flex flex-wrap items-center justify-between gap-3 p-4">

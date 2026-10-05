@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import CoverCard from '@/components/CoverCard.vue'
+import WordHint from '@/components/WordHint.vue'
 import { getUnitBySlug } from '@/content/course'
 import { coverForUnit, imageForTextOrUnit } from '@/content/visuals'
 import { getLessonsForUnit } from '@/content/units'
@@ -51,8 +52,10 @@ function lessonCover(title: Labeled, summary: Labeled) {
       <div class="absolute inset-0 bg-linear-to-t from-ink/80 via-ink/25 to-transparent" />
       <div class="absolute inset-x-0 bottom-0 p-6 text-cream">
         <p class="kicker mb-2 text-gold">{{ isResource ? t('course.resources') : `Unité ${unit.id}` }}</p>
-        <h1 class="m-0 font-serif text-[clamp(1.8rem,4vw,3rem)] text-cream">{{ lang === 'fr-FR' ? unit.title : unit.titleEn }}</h1>
-        <p class="mt-2 mb-0 max-w-[50ch] text-cream/90">{{ label(unit.blurb) }}</p>
+        <h1 class="m-0 font-serif text-[clamp(1.8rem,4vw,3rem)] text-cream">
+          <WordHint :text="lang === 'fr-FR' ? unit.title : unit.titleEn" />
+        </h1>
+        <p class="mt-2 mb-0 max-w-[50ch] text-cream/90"><WordHint :text="label(unit.blurb)" /></p>
       </div>
     </section>
 
@@ -81,14 +84,14 @@ function lessonCover(title: Labeled, summary: Labeled) {
       <section v-for="group in groups" :key="group.key" class="card p-5">
         <h2 class="mb-2 text-xl">{{ t(`unit.${group.key}`) }}</h2>
         <ul class="m-0 list-disc pl-5">
-          <li v-for="item in group.items" :key="item.fr">{{ label(item) }}</li>
+          <li v-for="item in group.items" :key="item.fr"><WordHint :text="label(item)" /></li>
         </ul>
       </section>
       <section v-if="unit.project" class="card overflow-hidden p-0">
         <img :src="cover.src" :alt="cover.alt" class="h-28 w-full object-cover" />
         <div class="p-5">
           <h2 class="mb-2 text-xl">{{ t('unit.project') }}</h2>
-          <p class="m-0">{{ label(unit.project) }}</p>
+          <p class="m-0"><WordHint :text="label(unit.project)" /></p>
         </div>
       </section>
     </div>

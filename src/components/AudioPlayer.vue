@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { stopSpeech } from '@/composables/useSpeech'
+import WordHint from '@/components/WordHint.vue'
 import { useProgressStore } from '@/stores/progress'
 import type { ActivityAudio, Locale } from '@/types/course'
 
@@ -80,8 +81,8 @@ onBeforeUnmount(() => {
     />
     <div>
       <p class="kicker">{{ t('activity.recording') }}</p>
-      <h3 class="mb-1 text-xl">{{ progress.labelFor(lang, audio.title) }}</h3>
-      <p v-if="audio.hint" class="muted">{{ progress.labelFor(lang, audio.hint) }}</p>
+      <h3 class="mb-1 text-xl"><WordHint :text="progress.labelFor(lang, audio.title)" /></h3>
+      <p v-if="audio.hint" class="muted"><WordHint :text="progress.labelFor(lang, audio.hint)" /></p>
     </div>
     <div class="grid grid-cols-[auto_1fr_auto] items-center gap-3 sm:grid-cols-[auto_1fr_auto_auto]">
       <button

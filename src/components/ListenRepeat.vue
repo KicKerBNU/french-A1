@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SpeakButton from '@/components/SpeakButton.vue'
+import WordHint from '@/components/WordHint.vue'
 import { speakFrench } from '@/composables/useSpeech'
 import { imageForTextOrUnit } from '@/content/visuals'
 import type { VocabItem } from '@/types/course'
@@ -34,8 +35,8 @@ function visualFor(item: VocabItem) {
     >
       <img :src="visualFor(item).src" :alt="visualFor(item).alt" class="photo-thumb" />
       <div class="min-w-0 flex-1">
-        <strong class="text-[1.15rem]">{{ item.fr }}</strong>
-        <p class="mt-1 mb-0 muted">{{ item.en }}</p>
+        <strong class="text-[1.15rem]"><WordHint :text="item.fr" source="fr" /></strong>
+        <p class="mt-1 mb-0 muted"><WordHint :text="item.en" source="en" /></p>
       </div>
       <div class="flex items-center gap-2">
         <SpeakButton :text="item.fr" />

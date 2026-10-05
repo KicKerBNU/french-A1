@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { speakFrench } from '@/composables/useSpeech'
+import WordHint from '@/components/WordHint.vue'
 import type { AlphabetLetter } from '@/types/course'
 
 const props = defineProps<{
@@ -15,6 +16,7 @@ const choices = ref<AlphabetLetter[]>(props.letters.slice(0, 4))
 const picked = ref<string | null>(null)
 const score = ref(0)
 const turns = ref(0)
+const isCorrect = computed(() => picked.value === target.value.letter)
 
 function play(letter: AlphabetLetter) {
   speakFrench(letter.letter)
@@ -44,7 +46,10 @@ function choose(letter: string) {
   if (picked.value) return
   picked.value = letter
   turns.value += 1
-  if (letter === target.value.letter) score.value += 1
+  if (letter === target.value.letter) {
+    score.value += 1
+  }
+  speakFrench(target.value.letter)
 }
 
 function cellClass(letter: string) {
@@ -70,36 +75,73 @@ watch(
       <button class="btn btn-primary" type="button" @click="startQuiz">{{ t('activity.quizLetter') }}</button>
     </div>
 
-    <div v-if="mode === 'board'" class="grid grid-cols-[repeat(auto-fill,minmax(4.5rem,1fr))] gap-2">
-      <button
-        v-for="letter in letters"
-        :key="letter.letter"
-        type="button"
-        class="surface grid min-h-[4.5rem] gap-0.5 p-2"
-        @click="play(letter)"
-      >
-        <b class="font-serif text-[1.4rem]">{{ letter.letter }}</b>
-        <small class="text-ink-soft">{{ letter.example }}</small>
-      </button>
+    <div v-if="mode === 'board'" class="grid gap-1.5">
+      <div class="flex justify-center gap-1.5">
+        <button
+          v-for="letter in letters.slice(0, 13)"
+          :key="letter.letter"
+          type="button"
+          class="surface grid h-[4.6rem] min-w-0 flex-1 place-items-center content-center gap-0 px-1 text-center"
+          @click="play(letter)"
+        >
+          <b class="font-serif text-[1.35rem] leading-none">{{ letter.letter }}</b>
+          <small class="max-w-full truncate text-[0.68rem] leading-tight text-ink-soft">
+            <WordHint :text="letter.example" source="fr" />
+          </small>
+        </button>
+      </div>
+      <div class="flex justify-center gap-1.5">
+        <button
+          v-for="letter in letters.slice(13)"
+          :key="letter.letter"
+          type="button"
+          class="surface grid h-[4.6rem] min-w-0 flex-1 place-items-center content-center gap-0 px-1 text-center"
+          @click="play(letter)"
+        >
+          <b class="font-serif text-[1.35rem] leading-none">{{ letter.letter }}</b>
+          <small class="max-w-full truncate text-[0.68rem] leading-tight text-ink-soft">
+            <WordHint :text="letter.example" source="fr" />
+          </small>
+        </button>
+      </div>
     </div>
 
     <div v-else class="card grid gap-3 p-5">
       <p class="kicker">{{ score }} / {{ turns }}</p>
       <h3 class="m-0">{{ t('activity.quizLetter') }}</h3>
       <button class="btn btn-ghost w-fit" type="button" @click="speakFrench(target.letter)">{{ t('activity.replay') }}</button>
-      <div class="grid grid-cols-[repeat(auto-fill,minmax(4.5rem,1fr))] gap-2">
+      <div class="flex flex-wrap justify-center gap-2">
         <button
           v-for="option in choices"
           :key="option.letter"
           type="button"
-          class="grid min-h-[4.5rem] p-2"
+          class="relative grid size-[4.6rem] place-items-center text-center"
           :class="cellClass(option.letter)"
+          :aria-pressed="picked === option.letter"
           @click="choose(option.letter)"
         >
-          <b class="font-serif text-[1.4rem]">{{ option.letter }}</b>
+          <b class="font-serif text-[1.4rem] leading-none">{{ option.letter }}</b>
+          <span
+            v-if="picked && option.letter === target.letter"
+            class="absolute bottom-1 text-sm font-bold leading-none text-pine-deep"
+          >✓</span>
+          <span
+            v-else-if="picked === option.letter"
+            class="absolute bottom-1 text-sm font-bold leading-none text-terracotta"
+          >✗</span>
         </button>
       </div>
-      <button v-if="picked" class="btn btn-primary w-fit" type="button" @click="nextPrompt">{{ t('app.next') }}</button>
+      <p
+        v-if="picked"
+        class="m-0 text-center text-lg font-bold"
+        :class="isCorrect ? 'text-pine-deep' : 'text-terracotta'"
+        role="status"
+        aria-live="polite"
+      >
+        {{ isCorrect ? t('activity.correct') : t('activity.incorrect') }}
+        <span v-if="!isCorrect">{{ t('activity.answerWas', { letter: target.letter }) }}</span>
+      </p>
+      <button v-if="picked" class="btn btn-primary mx-auto w-fit" type="button" @click="nextPrompt">{{ t('app.next') }}</button>
     </div>
   </div>
 </template>

@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SpeakButton from '@/components/SpeakButton.vue'
+import WordHint from '@/components/WordHint.vue'
 import { imageForText } from '@/content/visuals'
 import type { ContentBlock, Locale } from '@/types/course'
 
@@ -25,11 +26,11 @@ function itemVisual(item: { fr: string; en: string }) {
 <template>
   <div class="grid gap-3.5">
     <template v-for="(block, index) in blocks" :key="index">
-      <h3 v-if="block.type === 'heading'" class="mt-2 mb-0 text-[1.4rem]">{{ text(block.title) }}</h3>
-      <p v-else-if="block.type === 'paragraph'" class="m-0 muted">{{ text(block.text) }}</p>
+      <h3 v-if="block.type === 'heading'" class="mt-2 mb-0 text-[1.4rem]"><WordHint :text="text(block.title)" /></h3>
+      <p v-else-if="block.type === 'paragraph'" class="m-0 muted"><WordHint :text="text(block.text)" /></p>
       <aside v-else-if="block.type === 'note'" class="rounded-r-2xl border-l-[3px] border-gold bg-gold/10 px-4 py-4">
-        <strong>{{ text(block.title) }}</strong>
-        <p class="mt-1.5 mb-0">{{ text(block.text) }}</p>
+        <strong><WordHint :text="text(block.title)" /></strong>
+        <p class="mt-1.5 mb-0"><WordHint :text="text(block.text)" /></p>
       </aside>
       <ul v-else-if="block.type === 'examples'" class="m-0 grid list-none gap-2 p-0">
         <li
@@ -45,10 +46,10 @@ function itemVisual(item: { fr: string; en: string }) {
           />
           <span class="grid min-w-0 flex-1 gap-1 sm:grid-cols-[1.2fr_1fr] sm:items-center">
             <span class="flex items-center justify-between gap-2 font-bold">
-              {{ item.fr }}
+              <WordHint :text="item.fr" source="fr" />
               <SpeakButton :text="item.fr" />
             </span>
-            <span class="text-[0.92rem] text-ink-soft">{{ item.en }}</span>
+            <span class="text-[0.92rem] text-ink-soft"><WordHint :text="item.en" source="en" /></span>
           </span>
         </li>
       </ul>

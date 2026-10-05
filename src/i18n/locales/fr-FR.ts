@@ -54,6 +54,8 @@ const frFR = {
   activity: {
     complete: 'Marquer comme fait',
     completed: 'Terminé',
+    next: 'Exercice suivant',
+    unitDone: 'Retour à l’unité',
     check: 'Vérifier',
     again: 'Réessayer',
     show: 'Afficher l’anglais',
@@ -61,6 +63,7 @@ const frFR = {
     speak: 'Écouter',
     correct: 'C’est ça.',
     incorrect: 'Pas celle-là.',
+    answerWas: 'C’était {letter}.',
     score: '{score} / {total}',
     flip: 'Toucher pour retourner',
     nextCard: 'Carte suivante',

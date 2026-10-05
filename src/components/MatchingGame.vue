@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { imageForText } from '@/content/visuals'
+import WordHint from '@/components/WordHint.vue'
 import type { MatchPair } from '@/types/course'
 
 const props = defineProps<{
@@ -78,7 +79,7 @@ function rightClass(id: string) {
         @click="chooseLeft(item.id)"
       >
         <img v-if="visualFor(item.text)" :src="visualFor(item.text)!.src" :alt="visualFor(item.text)!.alt" class="size-10 rounded-lg object-cover" />
-        {{ item.text }}
+        <WordHint :text="item.text" />
       </button>
     </div>
     <div class="grid gap-2">
@@ -92,7 +93,7 @@ function rightClass(id: string) {
         @click="chooseRight(item.id)"
       >
         <img v-if="visualFor(item.text)" :src="visualFor(item.text)!.src" :alt="visualFor(item.text)!.alt" class="size-10 rounded-lg object-cover" />
-        {{ item.text }}
+        <WordHint :text="item.text" />
       </button>
     </div>
     <p v-if="matched.length === pairs.length" class="col-span-full mt-2 mb-0 font-bold text-pine-deep">

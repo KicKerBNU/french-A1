@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import CoverCard from '@/components/CoverCard.vue'
 import ProgressRing from '@/components/ProgressRing.vue'
+import WordHint from '@/components/WordHint.vue'
 import { getUnitById, units } from '@/content/course'
 import { coverForUnit, homeHero } from '@/content/visuals'
 import { getLesson } from '@/content/units'
@@ -57,7 +58,7 @@ const lastLesson = computed(() => {
         </div>
         <p v-if="lastLesson" class="m-0 font-bold text-cream">
           <RouterLink class="underline decoration-gold/70 underline-offset-4" :to="`/units/${lastLesson.unit.slug}/${lastLesson.lesson.id}`">
-            {{ t('home.resume', { lesson: progress.labelFor(lang, lastLesson.lesson.title) }) }}
+            <WordHint :text="t('home.resume', { lesson: progress.labelFor(lang, lastLesson.lesson.title) })" />
           </RouterLink>
         </p>
       </div>

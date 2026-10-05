@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import CoverCard from '@/components/CoverCard.vue'
+import WordHint from '@/components/WordHint.vue'
 import { extraSections, units } from '@/content/course'
 import { coverForUnit, extraCovers } from '@/content/visuals'
 import { useProgressStore } from '@/stores/progress'
@@ -31,7 +32,9 @@ const lang = computed(() => locale.value as Locale)
         :accent="unit.accent"
       >
         <ul class="m-0 flex-1 list-disc pl-5 text-sm text-ink-soft">
-          <li v-for="item in unit.interactions.slice(0, 2)" :key="item.fr">{{ progress.labelFor(lang, item) }}</li>
+          <li v-for="item in unit.interactions.slice(0, 2)" :key="item.fr">
+            <WordHint :text="progress.labelFor(lang, item)" />
+          </li>
         </ul>
         <span v-if="unit.available" class="chip">{{ t('course.open') }}</span>
         <span v-else class="chip">{{ t('course.locked') }}</span>

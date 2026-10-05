@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import WordHint from '@/components/WordHint.vue'
 import { howImages } from '@/content/visuals'
 
 const { t } = useI18n()
@@ -22,8 +23,8 @@ const keys = ['open', 'lessons', 'daily', 'project', 'bilan'] as const
           >
             {{ index + 1 }}
           </span>
-          <h2 class="mb-1.5 text-[1.4rem]">{{ t(`how.steps.${key}.title`) }}</h2>
-          <p class="m-0">{{ t(`how.steps.${key}.text`) }}</p>
+          <h2 class="mb-1.5 text-[1.4rem]"><WordHint :text="t(`how.steps.${key}.title`)" /></h2>
+          <p class="m-0"><WordHint :text="t(`how.steps.${key}.text`)" /></p>
         </div>
       </li>
     </ol>

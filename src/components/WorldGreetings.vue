@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SpeakButton from '@/components/SpeakButton.vue'
+import WordHint from '@/components/WordHint.vue'
 import { speakFrench } from '@/composables/useSpeech'
 import { useProgressStore } from '@/stores/progress'
 import type { GreetingPin, Locale } from '@/types/course'
@@ -46,7 +47,7 @@ const lang = computed(() => locale.value as Locale)
         :style="{ left: `${(pin.x / 400) * 100}%`, top: `${(pin.y / 220) * 100}%` }"
         @click="speakFrench(pin.greeting)"
       >
-        {{ pin.greeting }}
+        <WordHint :text="pin.greeting" source="fr" />
       </button>
     </div>
     <ul class="m-0 grid list-none gap-2 p-0">
@@ -56,11 +57,13 @@ const lang = computed(() => locale.value as Locale)
         class="surface flex flex-col justify-between gap-3 p-3.5 font-normal sm:flex-row sm:items-center"
       >
         <strong class="flex items-center gap-2">
-          {{ pin.greeting }}
+          <WordHint :text="pin.greeting" source="fr" />
           <SpeakButton :text="pin.greeting" />
         </strong>
         <span class="text-left text-[0.92rem] font-normal text-ink-soft sm:text-right">
-          {{ progress.labelFor(lang, pin.region) }} · {{ progress.labelFor(lang, pin.when) }}
+          <WordHint :text="progress.labelFor(lang, pin.region)" />
+          ·
+          <WordHint :text="progress.labelFor(lang, pin.when)" />
         </span>
       </li>
     </ul>
