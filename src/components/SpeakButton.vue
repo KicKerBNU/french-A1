@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { speakFrench } from '@/composables/useSpeech'
+import { speakFrench, type VoiceGender } from '@/composables/useSpeech'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps<{
   text: string
   speaker?: string
+  voice?: VoiceGender
 }>()
 
 const { t } = useI18n()
@@ -15,7 +16,7 @@ const { t } = useI18n()
     class="icon-btn shrink-0"
     type="button"
     :aria-label="t('activity.speak')"
-    @click.stop="speakFrench(props.text, { speaker: props.speaker })"
+    @click.stop="speakFrench(props.text, { speaker: props.speaker, voice: props.voice })"
   >
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path d="M4 10v4h3l5 4V6L7 10H4z" fill="currentColor" />

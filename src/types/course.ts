@@ -123,6 +123,7 @@ export interface Activity {
   questions?: QuizQuestion[]
   dialogue?: Dialogue
   pairs?: MatchPair[]
+  matchStyle?: 'exact' | 'assign'
   letters?: AlphabetLetter[]
   pins?: GreetingPin[]
   spellNames?: SpellTarget[]

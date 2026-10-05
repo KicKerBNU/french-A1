@@ -77,6 +77,9 @@ const enUS = {
     order: 'Put the lines in order',
     reset: 'Reset',
     matched: 'All matched',
+    planHint: 'Tap a day, then an activity.',
+    planEmpty: 'Choose an activity',
+    planDone: 'That’s your week.',
     hearLetter: 'Tap a letter',
     quizLetter: 'What letter is this?',
     kind: {

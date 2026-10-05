@@ -39,9 +39,11 @@ export const extraCovers: Record<string, Visual> = {
 
 const people: Record<string, Visual> = {
   lina: { src: '/images/people/lina.jpg', alt: 'Lina' },
+  ines: { src: '/images/people/lina.jpg', alt: 'Inès' },
   maya: { src: '/images/people/maya.jpg', alt: 'Maya' },
   noah: { src: '/images/people/noah.jpg', alt: 'Noah' },
   tom: { src: '/images/people/tom.jpg', alt: 'Tom' },
+  libraire: { src: '/images/people/noah.jpg', alt: 'Libraire' },
   serveuse: { src: '/images/people/server.jpg', alt: 'Serveuse' },
   serveur: { src: '/images/people/server.jpg', alt: 'Serveur' },
   réceptionniste: { src: '/images/people/host.jpg', alt: 'Réceptionniste' },
@@ -57,9 +59,14 @@ const people: Record<string, Visual> = {
 }
 
 const topics: { keys: string[]; src: string; alt: string }[] = [
+  { keys: ['cathédrale', 'cathedrale', 'cathedral'], src: '/images/topics/cathedral.jpg', alt: 'A cathedral' },
+  { keys: ['palais', 'palace'], src: '/images/topics/palace.jpg', alt: 'A palace' },
+  { keys: ['cascade', 'waterfall'], src: '/images/topics/waterfall.jpg', alt: 'A waterfall' },
+  { keys: ['statue'], src: '/images/topics/statue.jpg', alt: 'A statue' },
+  { keys: ['le plan', 'un plan', 'plan de'], src: '/images/topics/map.jpg', alt: 'A map' },
   { keys: ['croissant'], src: '/images/topics/croissant.jpg', alt: 'Croissants' },
   { keys: ['café', 'cafe', 'coffee', 'espresso'], src: '/images/topics/coffee.jpg', alt: 'Coffee' },
-  { keys: ['thé', 'the ', 'tea'], src: '/images/topics/tea.jpg', alt: 'Tea' },
+  { keys: ['thé', 'tea'], src: '/images/topics/tea.jpg', alt: 'Tea' },
   { keys: ['pain', 'baguette', 'beurre', 'bread'], src: '/images/topics/bread.jpg', alt: 'Bread' },
   { keys: ['bacon', 'œuf', 'oeuf', 'petit-déjeuner', 'petit dejeuner', 'breakfast'], src: '/images/topics/breakfast.jpg', alt: 'Breakfast' },
   { keys: ['salade', 'légume', 'legume', 'tomate', 'ingrédient', 'ingredient'], src: '/images/topics/salad.jpg', alt: 'Salad' },
@@ -110,15 +117,32 @@ export function coverForUnit(unitId: number): Visual {
   return unitCovers[unitId] ?? homeHero
 }
 
+function normalizeVisual(text: string) {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+}
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
 export function imageForText(...parts: Array<string | undefined>): Visual | undefined {
-  const hay = parts.filter(Boolean).join(' ').toLowerCase()
+  const hay = normalizeVisual(parts.filter(Boolean).join(' '))
   if (!hay) return undefined
+  let best: { src: string; alt: string; length: number } | undefined
   for (const topic of topics) {
-    if (topic.keys.some((key) => hay.includes(key))) {
-      return { src: topic.src, alt: topic.alt }
+    for (const key of topic.keys) {
+      const needle = normalizeVisual(key.trim())
+      if (!needle) continue
+      const pattern = new RegExp(`(?:^|[^a-z0-9])${escapeRegExp(needle)}(?:$|[^a-z0-9])`)
+      if (pattern.test(hay) && (!best || needle.length > best.length)) {
+        best = { src: topic.src, alt: topic.alt, length: needle.length }
+      }
     }
   }
-  return undefined
+  return best ? { src: best.src, alt: best.alt } : undefined
 }
 
 export function imageForTextOrUnit(unitId: number, ...parts: Array<string | undefined>): Visual {

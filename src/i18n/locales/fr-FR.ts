@@ -77,6 +77,9 @@ const frFR = {
     order: 'Remets les répliques dans l’ordre',
     reset: 'Recommencer',
     matched: 'Tout est associé',
+    planHint: 'Touche un jour, puis une activité.',
+    planEmpty: 'Choisis une activité',
+    planDone: 'Voilà ta semaine.',
     hearLetter: 'Touche une lettre',
     quizLetter: 'Quelle lettre ?',
     kind: {

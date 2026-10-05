@@ -143,6 +143,7 @@ const continueLabel = computed(() => {
       <MatchingGame
         v-else-if="packed.activity.type === 'matching' && packed.activity.pairs"
         :pairs="packed.activity.pairs"
+        :assign-any="packed.activity.matchStyle === 'assign'"
         @finished="markComplete"
       />
       <AlphabetBoard v-else-if="packed.activity.type === 'alphabet' && packed.activity.letters" :letters="packed.activity.letters" />

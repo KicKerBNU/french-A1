@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import AvatarChip from '@/components/AvatarChip.vue'
 import SpeakButton from '@/components/SpeakButton.vue'
 import WordHint from '@/components/WordHint.vue'
+import { dialogueVoices } from '@/composables/useSpeech'
 import { avatarFor } from '@/content/visuals'
 import { useProgressStore } from '@/stores/progress'
 import type { Dialogue, Locale } from '@/types/course'
@@ -33,6 +34,8 @@ function reset() {
   pool.value = shuffle(props.dialogue.lines.map((_, i) => i))
 }
 
+const voices = computed(() => dialogueVoices(props.dialogue.lines.map((line) => line.speaker)))
+
 const ordered = computed(
   () => built.value.every((value, index) => value === index) && built.value.length === props.dialogue.lines.length,
 )
@@ -48,7 +51,7 @@ const ordered = computed(
           <span class="text-xs font-extrabold text-gold-deep">{{ line.speaker }}</span>
           <strong class="mt-0.5 flex items-center gap-2">
             <WordHint :text="line.fr" source="fr" />
-            <SpeakButton :text="line.fr" :speaker="line.speaker" />
+            <SpeakButton :text="line.fr" :speaker="line.speaker" :voice="voices[line.speaker]" />
           </strong>
           <small v-if="progress.state.showEnglish" class="mt-1 block text-ink-soft">
             <WordHint :text="line.en" source="en" />

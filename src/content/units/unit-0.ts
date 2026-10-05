@@ -872,9 +872,10 @@ export const unit0Lessons: Lesson[] = [
         type: 'matching',
         title: { fr: 'Une semaine d’étude', en: 'A study week' },
         intro: {
-          fr: 'Associe le jour et une activité possible. Invente ensuite ta vraie semaine.',
-          en: 'Match the day and a possible activity. Then invent your real week.',
+          fr: 'Pour chaque jour, choisis une activité. Compose ta semaine d’étude.',
+          en: 'For each day, pick a study activity. Build your study week.',
         },
+        matchStyle: 'assign',
         pairs: [
           { id: 'w1', left: 'lundi matin', right: 'aller en classe de français' },
           { id: 'w2', left: 'mardi après-midi', right: 'apprendre dix mots' },
