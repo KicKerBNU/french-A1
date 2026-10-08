@@ -55,7 +55,8 @@ function lessonCover(title: Labeled, summary: Labeled) {
         <h1 class="m-0 font-serif text-[clamp(1.8rem,4vw,3rem)] text-cream">
           <WordHint :text="lang === 'fr-FR' ? unit.title : unit.titleEn" />
         </h1>
-        <p class="mt-2 mb-0 max-w-[50ch] text-cream/90"><WordHint :text="label(unit.blurb)" /></p>
+        <p class="mt-2 mb-3 max-w-[50ch] text-cream/90"><WordHint :text="label(unit.blurb)" /></p>
+        <span class="chip bg-cream/15 text-cream">{{ progress.unitProgress(unit.id) }}%</span>
       </div>
     </section>
 

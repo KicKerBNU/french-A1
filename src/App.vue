@@ -10,20 +10,7 @@ import type { Locale } from '@/types/course'
 const { t, locale } = useI18n()
 const route = useRoute()
 const progress = useProgressStore()
-const openProgress = computed(() =>
-  Math.round(
-    (progress.unitProgress(0) +
-      progress.unitProgress(1) +
-      progress.unitProgress(2) +
-      progress.unitProgress(3) +
-      progress.unitProgress(4) +
-      progress.unitProgress(5) +
-      progress.unitProgress(6) +
-      progress.unitProgress(7) +
-      progress.unitProgress(8)) /
-      9,
-  ),
-)
+const openProgress = computed(() => progress.overallProgress())
 
 function setLocale(next: Locale) {
   locale.value = next

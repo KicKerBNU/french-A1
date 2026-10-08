@@ -15,20 +15,7 @@ const { t, locale } = useI18n()
 const progress = useProgressStore()
 const lang = computed(() => locale.value as Locale)
 const unit8 = computed(() => units[8])
-const percent = computed(() =>
-  Math.round(
-    (progress.unitProgress(0) +
-      progress.unitProgress(1) +
-      progress.unitProgress(2) +
-      progress.unitProgress(3) +
-      progress.unitProgress(4) +
-      progress.unitProgress(5) +
-      progress.unitProgress(6) +
-      progress.unitProgress(7) +
-      progress.unitProgress(8)) /
-      9,
-  ),
-)
+const percent = computed(() => progress.overallProgress())
 const lastLesson = computed(() => {
   const unitId = progress.state.lastUnitId
   const lessonId = progress.state.lastLessonId

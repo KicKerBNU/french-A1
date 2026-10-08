@@ -38,6 +38,7 @@ const lang = computed(() => locale.value as Locale)
         </ul>
         <span v-if="unit.available" class="chip">{{ t('course.open') }}</span>
         <span v-else class="chip">{{ t('course.locked') }}</span>
+        <span class="chip">{{ progress.unitProgress(unit.id) }}%</span>
       </CoverCard>
     </div>
 
